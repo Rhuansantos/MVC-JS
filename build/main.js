@@ -40,8 +40,13 @@ var App = exports.App = function () {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.Controller = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _model = require('./model');
+
+var _view = require('./view');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,15 +68,42 @@ var Controller = exports.Controller = function () {
 	return Controller;
 }();
 
-},{}],3:[function(require,module,exports){
+},{"./model":4,"./view":5}],3:[function(require,module,exports){
 "use strict";
 
 var _App = require("./App");
 
 window.addEventListener("load", function () {
-
 	var myApp = _App.App.getInstance();
-}); // import {model} from './Model';
-// import {view} from './View';
+	// let myApp2 = App.getInstance(); testing singleton
+});
 
-},{"./App":1}]},{},[3]);
+},{"./App":1}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Model = exports.Model = function Model() {
+	_classCallCheck(this, Model);
+
+	console.log('loading');
+};
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = exports.View = function View() {
+	_classCallCheck(this, View);
+};
+
+},{}]},{},[3]);
