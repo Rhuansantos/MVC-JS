@@ -16,10 +16,19 @@ var App = exports.App = function () {
 	function App() {
 		_classCallCheck(this, App);
 
-		var controller = new _controller.Controller('a');
+		this.create();
 	}
 
-	_createClass(App, null, [{
+	_createClass(App, [{
+		key: 'create',
+		value: function create() {
+			var studentName = document.getElementById('studentName').value;
+			var studentAge = document.getElementById('studentAge').value;
+			var grades = document.getElementById('grades').value;
+
+			var controller = new _controller.Controller(studentName, studentAge, grades);
+		}
+	}], [{
 		key: 'getInstance',
 		value: function getInstance() {
 			if (!App._instance) {
@@ -51,17 +60,19 @@ var _view = require('./view');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controller = exports.Controller = function () {
-	function Controller(_a) {
+	function Controller(_name, _age, _grades) {
 		_classCallCheck(this, Controller);
 
-		this.a = _a;
+		this.name = _name;
+		this.age = _age;
+		this.grades = _grades;
 		this.create();
 	}
 
 	_createClass(Controller, [{
 		key: 'create',
 		value: function create() {
-			console.log('ahahha');
+			console.log(this.name, this.age, this.grades);
 		}
 	}]);
 
@@ -69,12 +80,15 @@ var Controller = exports.Controller = function () {
 }();
 
 },{"./model":4,"./view":5}],3:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _App = require("./App");
+var _App = require('./App');
 
 window.addEventListener("load", function () {
-	var myApp = _App.App.getInstance();
+	document.getElementById('form').addEventListener('submit', function (e) {
+		e.preventDefault();
+		var myApp = _App.App.getInstance();
+	});
 });
 
 },{"./App":1}],4:[function(require,module,exports){

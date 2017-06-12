@@ -2,7 +2,7 @@ import {Controller} from './controller';
 
 export class App{
 	constructor(){
-		const controller = new Controller('a');
+		this.create();
 	}
 	static getInstance(){
 		if(!App._instance){
@@ -12,5 +12,13 @@ export class App{
 		else{
 			throw 'App was already created';
 		}
+	}
+
+	create(){
+		const studentName = document.getElementById('studentName').value;
+		const studentAge = document.getElementById('studentAge').value;
+		const grades = document.getElementById('grades').value;
+
+		const controller = new Controller(studentName, studentAge, grades);
 	}
 }
