@@ -1,8 +1,8 @@
 export class View {
 	constructor(){
-		this.printStudentProfile();
 	}
 	
+	// print profile
 	static printStudentProfile(){
 		let studentProfile = `
 			<h1>Olá</h1>

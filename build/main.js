@@ -16,16 +16,21 @@ var App = exports.App = function () {
 	function App() {
 		_classCallCheck(this, App);
 
-		this.create();
+		// exec this function
+		this.sendForm();
 	}
+	// Singleton
+
 
 	_createClass(App, [{
-		key: 'create',
-		value: function create() {
+		key: 'sendForm',
+		value: function sendForm() {
+			// form fields
 			var studentName = document.getElementById('studentName').value;
 			var studentAge = document.getElementById('studentAge').value;
 			var grades = document.getElementById('grades').value;
 
+			// instance
 			var controller = new _controller.Controller(studentName, studentAge, grades);
 		}
 	}], [{
@@ -84,7 +89,12 @@ var Controller = exports.Controller = function () {
 	_createClass(Controller, [{
 		key: 'create',
 		value: function create() {
-			console.log(this.name, this.age, this.grades);
+			this.model = new _model.Model();
+
+			var getGrades = this.model.processGrades(this.grades);
+			var getAvg = this.model.processAvg(getGrades);
+
+			// print student
 			var print = _view.View.printStudentProfile();
 		}
 	}]);
@@ -98,16 +108,42 @@ var Controller = exports.Controller = function () {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.Model = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = require('../util');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Model = exports.Model = function Model() {
-	_classCallCheck(this, Model);
+var Model = exports.Model = function () {
+	function Model() {
+		_classCallCheck(this, Model);
 
-	console.log('loading');
-};
+		console.log('loading');
+	}
 
-},{}],5:[function(require,module,exports){
+	_createClass(Model, [{
+		key: 'processAvg',
+		value: function processAvg(_data) {
+
+			_data = _util.Util.calculateAvg(_data);
+
+			return _data;
+		}
+	}, {
+		key: 'processGrades',
+		value: function processGrades(_data) {
+			_data = _util.Util.splitArray(_data);
+
+			return _data;
+		}
+	}]);
+
+	return Model;
+}();
+
+},{"../util":6}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -121,9 +157,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var View = exports.View = function () {
 	function View() {
 		_classCallCheck(this, View);
-
-		this.printStudentProfile();
 	}
+
+	// print profile
+
 
 	_createClass(View, null, [{
 		key: 'printStudentProfile',
@@ -135,6 +172,49 @@ var View = exports.View = function () {
 	}]);
 
 	return View;
+}();
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Util = exports.Util = function () {
+	function Util() {
+		_classCallCheck(this, Util);
+	}
+
+	_createClass(Util, null, [{
+		key: 'calculateAvg',
+		value: function calculateAvg(_n) {
+			var total = 0;
+			var avg = 0;
+			_n.forEach(function (_el) {
+				var toNumber = parseInt(_el);
+				console.log(toNumber);
+				total += toNumber;
+				avg = total / _n.length;
+			});
+
+			return Math.round(avg);
+		}
+	}, {
+		key: 'splitArray',
+		value: function splitArray(_n) {
+
+			var sliptArray = _n.split(',');
+
+			return sliptArray;
+		}
+	}]);
+
+	return Util;
 }();
 
 },{}]},{},[2]);

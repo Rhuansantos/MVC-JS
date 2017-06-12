@@ -9,7 +9,12 @@ export class Controller {
 		this.create();
 	}
 	create(){	
-		console.log(this.name, this.age, this.grades);
+		this.model = new Model();
+		
+		let getGrades = this.model.processGrades(this.grades);
+		let getAvg = this.model.processAvg(getGrades);
+				
+		// print student
 		let print = View.printStudentProfile();
 	}
 }
