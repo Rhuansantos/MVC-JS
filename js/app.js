@@ -1,4 +1,4 @@
-import {Controller} from './controller';
+import {Controller} from './mvc/controller';
 
 export class App{
 	constructor(){

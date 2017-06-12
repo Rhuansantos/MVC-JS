@@ -8,7 +8,7 @@ exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controller = require('./controller');
+var _controller = require('./mvc/controller');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43,7 +43,19 @@ var App = exports.App = function () {
 	return App;
 }();
 
-},{"./controller":2}],2:[function(require,module,exports){
+},{"./mvc/controller":3}],2:[function(require,module,exports){
+'use strict';
+
+var _App = require('./App');
+
+window.addEventListener("load", function () {
+	document.getElementById('form').addEventListener('submit', function (e) {
+		e.preventDefault();
+		var myApp = _App.App.getInstance();
+	});
+});
+
+},{"./App":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73,25 +85,14 @@ var Controller = exports.Controller = function () {
 		key: 'create',
 		value: function create() {
 			console.log(this.name, this.age, this.grades);
+			var print = _view.View.printStudentProfile();
 		}
 	}]);
 
 	return Controller;
 }();
 
-},{"./model":4,"./view":5}],3:[function(require,module,exports){
-'use strict';
-
-var _App = require('./App');
-
-window.addEventListener("load", function () {
-	document.getElementById('form').addEventListener('submit', function (e) {
-		e.preventDefault();
-		var myApp = _App.App.getInstance();
-	});
-});
-
-},{"./App":1}],4:[function(require,module,exports){
+},{"./model":4,"./view":5}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -107,16 +108,33 @@ var Model = exports.Model = function Model() {
 };
 
 },{}],5:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var View = exports.View = function View() {
-	_classCallCheck(this, View);
-};
+var View = exports.View = function () {
+	function View() {
+		_classCallCheck(this, View);
 
-},{}]},{},[3]);
+		this.printStudentProfile();
+	}
+
+	_createClass(View, null, [{
+		key: 'printStudentProfile',
+		value: function printStudentProfile() {
+			var studentProfile = '\n\t\t\t<h1>Ol\xE1</h1>\n\t\t';
+
+			document.getElementById('studentProfile').insertAdjacentHTML('beforeend', studentProfile);
+		}
+	}]);
+
+	return View;
+}();
+
+},{}]},{},[2]);

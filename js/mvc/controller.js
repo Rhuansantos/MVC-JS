@@ -10,5 +10,6 @@ export class Controller {
 	}
 	create(){	
 		console.log(this.name, this.age, this.grades);
+		let print = View.printStudentProfile();
 	}
 }
