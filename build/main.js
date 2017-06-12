@@ -75,7 +75,6 @@ var _App = require("./App");
 
 window.addEventListener("load", function () {
 	var myApp = _App.App.getInstance();
-	// let myApp2 = App.getInstance(); testing singleton
 });
 
 },{"./App":1}],4:[function(require,module,exports){
