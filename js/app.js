@@ -5,14 +5,19 @@ export class App{
 		// exec this function
 		this.sendForm();
 	}
-	// Singleton
-	static getInstance(){
-		if(!App._instance){
-			App._instance = new App();
-			return App._instance;
+	// Singleton - allows create 1 professor and many students
+	static getInstance(_type){
+		if(_type == 'professor'){
+			if(!App._instance){
+				App._instance = new App();
+				return App._instance;
+			}
+			else{
+				throw 'App was already created';
+			}
 		}
-		else{
-			throw 'App was already created';
+		if(_type == 'student'){		
+			App._instance = new App();
 		}
 	}
 

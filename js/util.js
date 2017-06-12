@@ -6,7 +6,6 @@ export class Util{
 		let avg = 0;
 		_n.forEach(_el => {
 			let toNumber = parseInt(_el);
-			console.log(toNumber);
 			total += toNumber;
 			avg = total/_n.length;
 		});

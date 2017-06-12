@@ -19,7 +19,7 @@ var App = exports.App = function () {
 		// exec this function
 		this.sendForm();
 	}
-	// Singleton
+	// Singleton - allows create 1 professor and many students
 
 
 	_createClass(App, [{
@@ -35,12 +35,17 @@ var App = exports.App = function () {
 		}
 	}], [{
 		key: 'getInstance',
-		value: function getInstance() {
-			if (!App._instance) {
+		value: function getInstance(_type) {
+			if (_type == 'professor') {
+				if (!App._instance) {
+					App._instance = new App();
+					return App._instance;
+				} else {
+					throw 'App was already created';
+				}
+			}
+			if (_type == 'student') {
 				App._instance = new App();
-				return App._instance;
-			} else {
-				throw 'App was already created';
 			}
 		}
 	}]);
@@ -54,9 +59,14 @@ var App = exports.App = function () {
 var _App = require('./App');
 
 window.addEventListener("load", function () {
-	document.getElementById('form').addEventListener('submit', function (e) {
+	document.getElementById('addStudent').addEventListener('submit', function (e) {
 		e.preventDefault();
-		var myApp = _App.App.getInstance();
+		var myApp = _App.App.getInstance('student');
+	});
+
+	document.getElementById('addProfessor').addEventListener('submit', function (e) {
+		e.preventDefault();
+		var myApp2 = _App.App.getInstance('professor');
 	});
 });
 
@@ -197,7 +207,6 @@ var Util = exports.Util = function () {
 			var avg = 0;
 			_n.forEach(function (_el) {
 				var toNumber = parseInt(_el);
-				console.log(toNumber);
 				total += toNumber;
 				avg = total / _n.length;
 			});
