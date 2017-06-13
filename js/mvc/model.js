@@ -2,7 +2,6 @@ import {Util} from '../util';
 
 export class Model {
 	constructor(){
-		console.log('loading');
 	}
 
 	processAvg(_data){

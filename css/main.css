@@ -11,4 +11,7 @@ header {
 #form p label {
   display: block; }
 
+#addStudent {
+  display: none; }
+
 /*# sourceMappingURL=main.css.map */

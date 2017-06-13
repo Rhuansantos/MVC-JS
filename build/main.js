@@ -29,15 +29,16 @@ var App = exports.App = function () {
 			if (_type == 'professor') {
 				var professorName = document.getElementById('professorName').value;
 				var classRoonName = document.getElementById('className').value;
-				var controller = new _controller2.Controller(professorName, classRoonName, grades);
+				//instance
+				var controller = new _controller2.Controller(_type, professorName, classRoonName, null);
 			}
 			if (_type == 'student') {
 				// form fields
 				var studentName = document.getElementById('studentName').value;
 				var studentAge = document.getElementById('studentAge').value;
-				var _grades = document.getElementById('grades').value;
+				var grades = document.getElementById('grades').value;
 				// instance
-				var _controller = new _controller2.Controller(studentName, studentAge, _grades);
+				var _controller = new _controller2.Controller(_type, studentName, null, studentAge, grades);
 			}
 		}
 	}], [{
@@ -123,13 +124,19 @@ var _classRoom = require('.././classRoom');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controller = exports.Controller = function () {
-	function Controller(_name, _age, _grades) {
+	function Controller(_type, _name, _className, _age, _grades) {
 		_classCallCheck(this, Controller);
 
 		this.name = _name;
 		this.age = _age;
+		this.className = _className;
 		this.grades = _grades;
-		this.Student();
+		if (_type == 'professor') {
+			this.Professor();
+		}
+		if (_type == 'student') {
+			this.Student();
+		}
 	}
 
 	_createClass(Controller, [{
@@ -144,14 +151,12 @@ var Controller = exports.Controller = function () {
 			var student = new _classRoom.Student();
 			student.name = this.name;
 			student.age = this.age;
-			student.grades = getAvg;
+			student.averge = getAvg;
 
+			// init array
 			var studentsArray = [];
+			// push obj into array
 			studentsArray.push(student);
-
-			studentsArray.forEach(function (element) {
-				console.log(element);
-			}, this);
 
 			// print student
 			var print = _view.View.printStudentProfile(studentsArray);
@@ -162,8 +167,15 @@ var Controller = exports.Controller = function () {
 
 			// Professo obj
 			var professor = new _classRoom.Professor();
-			professor.className = '';
-			professor.professorName = '';
+			professor.className = this.name;
+			professor.professorName = this.className;
+
+			//init array
+			var professorArray = [];
+			// push obj into array
+			professorArray.push(professor);
+
+			var print = _view.View.printProfessorProfile(professorArray);
 		}
 	}]);
 
@@ -187,8 +199,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Model = exports.Model = function () {
 	function Model() {
 		_classCallCheck(this, Model);
-
-		console.log('loading');
 	}
 
 	_createClass(Model, [{
@@ -234,15 +244,19 @@ var View = exports.View = function () {
 		key: 'printStudentProfile',
 		value: function printStudentProfile(_obj) {
 
-			// console.log(studentsArray);
-
-			// _obj.forEach(function(el, i) {
-
-			// 	console.log(el, i);	
-			// });
-			var studentProfile = '\n\t\t\t<h1>Ol\xE1</h1>\n\t\t';
-
-			document.getElementById('studentProfile').insertAdjacentHTML('beforeend', studentProfile);
+			_obj.forEach(function (el, i) {
+				var studentProfile = '\n\t\t\t\t <h4>Name: ' + el.name + '</h4>\n\t\t\t\t <h4>Age: ' + el.age + '</h4>\n\t\t\t\t <h4>Avg Grades: ' + el.averge + '</h4>\n\t\t\t\t <hr/>\n\t\t\t';
+				document.getElementById('studentProfile').insertAdjacentHTML('beforeend', studentProfile);
+			});
+		}
+	}, {
+		key: 'printProfessorProfile',
+		value: function printProfessorProfile(_obj) {
+			_obj.forEach(function (el, i) {
+				var professorProfile = '\n\t\t\t\t <h4>Name: ' + el.professorName + '</h4>\n\t\t\t\t <h4>Age: ' + el.className + '</h4>\n\t\t\t\t <hr/>\n\t\t\t';
+				document.getElementById('professorProfile').insertAdjacentHTML('beforeend', professorProfile);
+			});
+			document.getElementById('addStudent').style.display = "block";
 		}
 	}]);
 

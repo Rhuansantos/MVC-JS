@@ -3,11 +3,17 @@ import {View} from './view';
 import {Student, Professor} from '.././classRoom';
 
 export class Controller {
-	constructor(_name, _age, _grades){
+	constructor(_type, _name, _className, _age, _grades){
 		this.name = _name;
 		this.age = _age;
+		this.className = _className;
 		this.grades = _grades;
-		this.Student();
+		if(_type == 'professor'){
+			this.Professor();
+		}
+		if(_type == 'student'){
+			this.Student();
+		}
 	}
 	 Student(){	
 		// model, get averge
@@ -19,26 +25,29 @@ export class Controller {
 		let student = new Student();
 		student.name = this.name;
 		student.age  = this.age;
-		student.grades = getAvg;
+		student.averge = getAvg;
 
+		// init array
 		let studentsArray = [];
+		// push obj into array
 		studentsArray.push(student);
 
-		
-
-		studentsArray.forEach(function(element) {
-			console.log(element);
-		}, this);
-				
 		// print student
 		let print = View.printStudentProfile(studentsArray);
 	}
 
 	Professor(){
-
+		
 		// Professo obj
 		let professor = new Professor();
-		professor.className = '';
-		professor.professorName = '';
+		professor.className = this.name;
+		professor.professorName = this.className;
+
+		//init array
+		let professorArray = []
+		// push obj into array
+		professorArray.push(professor);
+
+		let print = View.printProfessorProfile(professorArray);
 	}
 }

@@ -29,7 +29,8 @@ export class App{
 		if(_type == 'professor'){
 			const professorName = document.getElementById('professorName').value;
 			const classRoonName = document.getElementById('className').value;
-			const controller = new Controller(professorName, classRoonName, grades);
+			//instance
+			const controller = new Controller(_type, professorName, classRoonName, null);
 		}
 		if(_type == 'student'){
 			// form fields
@@ -37,7 +38,7 @@ export class App{
 			const studentAge = document.getElementById('studentAge').value;
 			const grades = document.getElementById('grades').value;
 			// instance
-			const controller = new Controller(studentName, studentAge, grades);
+			const controller = new Controller(_type, studentName, null, studentAge, grades);
 		}
 	}
 }
