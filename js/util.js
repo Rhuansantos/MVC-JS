@@ -15,8 +15,15 @@ export class Util{
 
 	static splitArray(_n){
 
-		let sliptArray = _n.split(',');
+		try {
+			let sliptArray = _n.split(',');
 
-		return sliptArray;
+			return sliptArray;
+
+		} catch (error) {
+			throw 'You should use an array of numbers for that function';
+		}
+
+
 	}
 }

@@ -3,7 +3,16 @@ export class View {
 	}
 	
 	// print profile
-	static printStudentProfile(){
+	static printStudentProfile(_obj){
+
+
+
+		// console.log(studentsArray);
+
+		// _obj.forEach(function(el, i) {
+
+		// 	console.log(el, i);	
+		// });
 		let studentProfile = `
 			<h1>Olá</h1>
 		`;

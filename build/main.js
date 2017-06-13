@@ -140,15 +140,21 @@ var Controller = exports.Controller = function () {
 			var getGrades = this.model.processGrades(this.grades);
 			var getAvg = this.model.processAvg(getGrades);
 
-			console.log(getAvg);
 			// Student Obj
 			var student = new _classRoom.Student();
 			student.name = this.name;
 			student.age = this.age;
 			student.grades = getAvg;
 
+			var studentsArray = [];
+			studentsArray.push(student);
+
+			studentsArray.forEach(function (element) {
+				console.log(element);
+			}, this);
+
 			// print student
-			var print = _view.View.printStudentProfile(student);
+			var print = _view.View.printStudentProfile(studentsArray);
 		}
 	}, {
 		key: 'Professor',
@@ -226,7 +232,14 @@ var View = exports.View = function () {
 
 	_createClass(View, null, [{
 		key: 'printStudentProfile',
-		value: function printStudentProfile() {
+		value: function printStudentProfile(_obj) {
+
+			// console.log(studentsArray);
+
+			// _obj.forEach(function(el, i) {
+
+			// 	console.log(el, i);	
+			// });
 			var studentProfile = '\n\t\t\t<h1>Ol\xE1</h1>\n\t\t';
 
 			document.getElementById('studentProfile').insertAdjacentHTML('beforeend', studentProfile);
@@ -269,9 +282,13 @@ var Util = exports.Util = function () {
 		key: 'splitArray',
 		value: function splitArray(_n) {
 
-			var sliptArray = _n.split(',');
+			try {
+				var sliptArray = _n.split(',');
 
-			return sliptArray;
+				return sliptArray;
+			} catch (error) {
+				throw 'You should use an array of numbers for that function';
+			}
 		}
 	}]);
 

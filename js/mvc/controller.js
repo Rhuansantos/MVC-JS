@@ -15,15 +15,23 @@ export class Controller {
 		let getGrades = this.model.processGrades(this.grades);
 		let getAvg = this.model.processAvg(getGrades);
 
-		console.log(getAvg);
 		// Student Obj
 		let student = new Student();
 		student.name = this.name;
 		student.age  = this.age;
 		student.grades = getAvg;
+
+		let studentsArray = [];
+		studentsArray.push(student);
+
+		
+
+		studentsArray.forEach(function(element) {
+			console.log(element);
+		}, this);
 				
 		// print student
-		let print = View.printStudentProfile(student);
+		let print = View.printStudentProfile(studentsArray);
 	}
 
 	Professor(){
