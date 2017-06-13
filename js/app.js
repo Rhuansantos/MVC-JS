@@ -1,15 +1,18 @@
 import {Controller} from './mvc/controller';
 
+
 export class App{
-	constructor(){
+	constructor(_type){
 		// exec this function
-		this.sendForm();
+
+		this.sendForm(_type);
 	}
 	// Singleton - allows create 1 professor and many students
 	static getInstance(_type){
 		if(_type == 'professor'){
 			if(!App._instance){
 				App._instance = new App();
+				App._instance.sendForm(_type);
 				return App._instance;
 			}
 			else{
@@ -18,16 +21,23 @@ export class App{
 		}
 		if(_type == 'student'){		
 			App._instance = new App();
+			App._instance.sendForm(_type);
 		}
 	}
 
-	sendForm(){
-		// form fields
-		const studentName = document.getElementById('studentName').value;
-		const studentAge = document.getElementById('studentAge').value;
-		const grades = document.getElementById('grades').value;
-
-		// instance
-		const controller = new Controller(studentName, studentAge, grades);
+	sendForm(_type){
+		if(_type == 'professor'){
+			const professorName = document.getElementById('professorName').value;
+			const classRoonName = document.getElementById('className').value;
+			const controller = new Controller(professorName, classRoonName, grades);
+		}
+		if(_type == 'student'){
+			// form fields
+			const studentName = document.getElementById('studentName').value;
+			const studentAge = document.getElementById('studentAge').value;
+			const grades = document.getElementById('grades').value;
+			// instance
+			const controller = new Controller(studentName, studentAge, grades);
+		}
 	}
 }

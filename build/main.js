@@ -8,30 +8,37 @@ exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _controller = require('./mvc/controller');
+var _controller2 = require('./mvc/controller');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var App = exports.App = function () {
-	function App() {
+	function App(_type) {
 		_classCallCheck(this, App);
 
 		// exec this function
-		this.sendForm();
+
+		this.sendForm(_type);
 	}
 	// Singleton - allows create 1 professor and many students
 
 
 	_createClass(App, [{
 		key: 'sendForm',
-		value: function sendForm() {
-			// form fields
-			var studentName = document.getElementById('studentName').value;
-			var studentAge = document.getElementById('studentAge').value;
-			var grades = document.getElementById('grades').value;
-
-			// instance
-			var controller = new _controller.Controller(studentName, studentAge, grades);
+		value: function sendForm(_type) {
+			if (_type == 'professor') {
+				var professorName = document.getElementById('professorName').value;
+				var classRoonName = document.getElementById('className').value;
+				var controller = new _controller2.Controller(professorName, classRoonName, grades);
+			}
+			if (_type == 'student') {
+				// form fields
+				var studentName = document.getElementById('studentName').value;
+				var studentAge = document.getElementById('studentAge').value;
+				var _grades = document.getElementById('grades').value;
+				// instance
+				var _controller = new _controller2.Controller(studentName, studentAge, _grades);
+			}
 		}
 	}], [{
 		key: 'getInstance',
@@ -39,6 +46,7 @@ var App = exports.App = function () {
 			if (_type == 'professor') {
 				if (!App._instance) {
 					App._instance = new App();
+					App._instance.sendForm(_type);
 					return App._instance;
 				} else {
 					throw 'App was already created';
@@ -46,6 +54,7 @@ var App = exports.App = function () {
 			}
 			if (_type == 'student') {
 				App._instance = new App();
+				App._instance.sendForm(_type);
 			}
 		}
 	}]);
@@ -53,7 +62,32 @@ var App = exports.App = function () {
 	return App;
 }();
 
-},{"./mvc/controller":3}],2:[function(require,module,exports){
+},{"./mvc/controller":4}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Student = exports.Student = function Student() {
+	_classCallCheck(this, Student);
+
+	this.name = '';
+	this.age = '';
+	this.grades = [];
+	this.averge = 0;
+};
+
+var Professor = exports.Professor = function Professor() {
+	_classCallCheck(this, Professor);
+
+	this.professorName = '';
+	this.className = '';
+};
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var _App = require('./App');
@@ -70,7 +104,7 @@ window.addEventListener("load", function () {
 	});
 });
 
-},{"./App":1}],3:[function(require,module,exports){
+},{"./App":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -84,6 +118,8 @@ var _model = require('./model');
 
 var _view = require('./view');
 
+var _classRoom = require('.././classRoom');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controller = exports.Controller = function () {
@@ -93,26 +129,42 @@ var Controller = exports.Controller = function () {
 		this.name = _name;
 		this.age = _age;
 		this.grades = _grades;
-		this.create();
+		this.Student();
 	}
 
 	_createClass(Controller, [{
-		key: 'create',
-		value: function create() {
+		key: 'Student',
+		value: function Student() {
+			// model, get averge
 			this.model = new _model.Model();
-
 			var getGrades = this.model.processGrades(this.grades);
 			var getAvg = this.model.processAvg(getGrades);
 
+			console.log(getAvg);
+			// Student Obj
+			var student = new _classRoom.Student();
+			student.name = this.name;
+			student.age = this.age;
+			student.grades = getAvg;
+
 			// print student
-			var print = _view.View.printStudentProfile();
+			var print = _view.View.printStudentProfile(student);
+		}
+	}, {
+		key: 'Professor',
+		value: function Professor() {
+
+			// Professo obj
+			var professor = new _classRoom.Professor();
+			professor.className = '';
+			professor.professorName = '';
 		}
 	}]);
 
 	return Controller;
 }();
 
-},{"./model":4,"./view":5}],4:[function(require,module,exports){
+},{".././classRoom":2,"./model":5,"./view":6}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -153,7 +205,7 @@ var Model = exports.Model = function () {
 	return Model;
 }();
 
-},{"../util":6}],5:[function(require,module,exports){
+},{"../util":7}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -184,7 +236,7 @@ var View = exports.View = function () {
 	return View;
 }();
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -226,4 +278,4 @@ var Util = exports.Util = function () {
 	return Util;
 }();
 
-},{}]},{},[2]);
+},{}]},{},[3]);
