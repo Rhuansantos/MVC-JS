@@ -1,6 +1,8 @@
 import {App} from './App';
 
 window.addEventListener("load", () => {
+
+	
 	document.getElementById('addStudent').addEventListener('submit', (e) => {
 		e.preventDefault();
 		let myApp = App.getInstance('student');
@@ -10,4 +12,5 @@ window.addEventListener("load", () => {
 		e.preventDefault();
 		let myApp2 = App.getInstance('professor');
 	});
+	
 });

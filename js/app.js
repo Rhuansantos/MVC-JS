@@ -1,6 +1,5 @@
 import {Controller} from './mvc/controller';
 
-
 export class App{
 	constructor(_type){
 		// exec this function

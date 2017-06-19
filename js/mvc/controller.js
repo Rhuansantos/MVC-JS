@@ -1,6 +1,5 @@
-import {Model} from './model';
+import {CustonEvents} from '.././events';
 import {View} from './view';
-import {Student, Professor} from '.././classRoom';
 
 export class Controller {
 	constructor(_type, _name, _className, _age, _grades){
@@ -8,6 +7,7 @@ export class Controller {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
+		// this.eventHandle = new EventHandle();
 		if(_type == 'professor'){
 			this.Professor();
 		}
@@ -33,21 +33,35 @@ export class Controller {
 		studentsArray.push(student);
 
 		// print student
-		let print = View.printStudentProfile(studentsArray);
+		let print = View.printStudentProfile(studentsArray); // when complete
 	}
 
 	Professor(){
+
+		let professor = CustonEvents.reading('Professor');
+
+		console.log(professor);
+
+		document.addEventListener('reading',  CustonEvents.reading());
+
+
+		if(professor.stats == 'Done'){
+			
+			professor._instance.className = this.className;
+			professor._instance.professorName = this.name;
+
+			
+			//init array
+			let professorArray = [];
+			// push obj into array
+			professorArray.push(professor._instance);
+
 		
-		// Professo obj
-		let professor = new Professor();
-		professor.className = this.name;
-		professor.professorName = this.className;
 
-		//init array
-		let professorArray = []
-		// push obj into array
-		professorArray.push(professor);
+			 let print = View.printProfessorProfile(professorArray);
+			// let professorView = EventHandle.complete(professorArray);
+			// document.addEventListener(EventHandle.EvtComplete, EventHandle.complete());
 
-		let print = View.printProfessorProfile(professorArray);
+		}
 	}
 }
