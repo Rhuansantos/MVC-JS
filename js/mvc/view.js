@@ -3,9 +3,9 @@ export class View {
 	}
 	
 	// print profile
-	static printStudentProfile(_obj){
-
-		_obj.forEach(function(el, i) {
+	static printStudentProfile(_e){
+		console.log(_e._obj);
+		_e.forEach(function(el, i) {
 			let studentProfile = `
 				 <h4>Name: ${el.name}</h4>
 				 <h4>Age: ${el.age}</h4>

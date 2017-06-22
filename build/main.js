@@ -133,7 +133,7 @@ var CustonEvents = exports.CustonEvents = function (_Event) {
             key: 'loading',
             value: function loading(_e) {
                   var loadEvt = new Event('loading');
-                  loadEvt._t = _e;
+                  loadEvt._obj = _e;
 
                   return loadEvt;
             }
@@ -196,7 +196,7 @@ var Controller = exports.Controller = function () {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
-		this.professorArray = [];
+		this.tempArray = [];
 
 		if (_type == 'professor') {
 			this.professor();
@@ -211,7 +211,7 @@ var Controller = exports.Controller = function () {
 		key: 'student',
 		value: function student() {
 
-			var evt = _events.CustonEvents.loading();
+			var evt = _events.CustonEvents.complete(this);
 
 			// model, get averge
 			this.model = new _model.Model();
@@ -220,17 +220,15 @@ var Controller = exports.Controller = function () {
 
 			// Student Obj
 			var student = new _classRoom.Student();
-			student.name = this.name;
-			student.age = this.age;
+			student.name = evt._obj.name;
+			student.age = evt._obj.age;
 			student.averge = getAvg;
 
-			// init array
-			var studentsArray = [];
 			// push obj into array
-			studentsArray.push(student);
+			evt._obj.tempArray.push(student);
 
-			// print student
-			var print = _view.View.printStudentProfile(studentsArray); // when complete
+			document.addEventListener('complete', this.sendView);
+			document.dispatchEvent(evt);
 		}
 	}, {
 		key: 'professor',
@@ -244,7 +242,7 @@ var Controller = exports.Controller = function () {
 			professor.professorName = evt._obj.name;
 
 			// push obj into array
-			evt._obj.professorArray.push(professor);
+			evt._obj.tempArray.push(professor);
 
 			document.addEventListener('complete', this.sendView);
 			document.dispatchEvent(evt);
@@ -252,8 +250,9 @@ var Controller = exports.Controller = function () {
 	}, {
 		key: 'sendView',
 		value: function sendView(_e) {
-			console.log('this event', _e);
-			_view.View.printProfessorProfile(_e._obj.professorArray);
+			console.log('this event', _e._obj.tempArray);
+			//    View.printProfessorProfile(_e._obj.tempArray);
+			_view.View.printStudentProfile(_e._obj.tempArray);
 		}
 	}]);
 
@@ -320,9 +319,9 @@ var View = exports.View = function () {
 
 	_createClass(View, null, [{
 		key: 'printStudentProfile',
-		value: function printStudentProfile(_obj) {
-
-			_obj.forEach(function (el, i) {
+		value: function printStudentProfile(_e) {
+			console.log(_e._obj);
+			_e.forEach(function (el, i) {
 				var studentProfile = '\n\t\t\t\t <h4>Name: ' + el.name + '</h4>\n\t\t\t\t <h4>Age: ' + el.age + '</h4>\n\t\t\t\t <h4>Avg Grades: ' + el.averge + '</h4>\n\t\t\t\t <hr/>\n\t\t\t';
 				document.getElementById('studentProfile').insertAdjacentHTML('beforeend', studentProfile);
 			});

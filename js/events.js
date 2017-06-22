@@ -15,7 +15,7 @@ export class CustonEvents extends Event{
 
       static loading(_e){
             let loadEvt = new Event('loading');
-            loadEvt._t = _e;
+            loadEvt._obj = _e;
             
             return loadEvt;
       }

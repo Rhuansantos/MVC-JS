@@ -9,7 +9,7 @@ export class Controller {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
-		this.professorArray = [];
+		this.tempArray = [];
 
 		if(_type == 'professor'){
 			this.professor();
@@ -24,7 +24,7 @@ export class Controller {
 	}
 	 student(){	
 
-		let evt = CustonEvents.loading();
+		let evt = CustonEvents.complete(this);
 
 		// model, get averge
 		this.model = new Model();
@@ -33,17 +33,15 @@ export class Controller {
 
 		// Student Obj
 		let student = new Student();
-		student.name = this.name;
-		student.age  = this.age;
+		student.name = evt._obj.name;
+		student.age  = evt._obj.age;
 		student.averge = getAvg;
 
-		// init array
-		let studentsArray = [];
 		// push obj into array
-		studentsArray.push(student);
+		evt._obj.tempArray.push(student);
 
-		// print student
-		let print = View.printStudentProfile(studentsArray); // when complete
+		document.addEventListener('complete', this.sendView);
+		document.dispatchEvent(evt);
 	}
 
 	  professor(_e){
@@ -56,7 +54,7 @@ export class Controller {
 		professor.professorName = evt._obj.name;		
 		
 		// push obj into array
-		evt._obj.professorArray.push(professor);
+		evt._obj.tempArray.push(professor);
 
 		document.addEventListener('complete', this.sendView);
 		document.dispatchEvent(evt);
@@ -64,7 +62,8 @@ export class Controller {
 	}
 
 	sendView(_e){
-		console.log('this event', _e);
-		View.printProfessorProfile(_e._obj.professorArray);
+		console.log('this event', _e._obj.tempArray);
+		//    View.printProfessorProfile(_e._obj.tempArray);
+		   View.printStudentProfile(_e._obj.tempArray);
 	}
 }
