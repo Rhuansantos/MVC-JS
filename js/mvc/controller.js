@@ -1,5 +1,6 @@
 import {CustonEvents} from '.././events';
 import {View} from './view';
+import {Student, Professor} from '.././classRoom';
 
 export class Controller {
 	constructor(_type, _name, _className, _age, _grades){
@@ -7,15 +8,21 @@ export class Controller {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
-		// this.eventHandle = new EventHandle();
+		
+		let evt = CustonEvents.load();
 		if(_type == 'professor'){
-			this.Professor();
+			document.addEventListener('load', this.professor());
 		}
-		if(_type == 'student'){
-			this.Student();
+		else if(_type == 'student'){
+			document.addEventListener('load', this.student());
 		}
+		else{
+			throw 'this is not a valid option';
+		}
+
+		document.dispatchEvent(evt);
 	}
-	 Student(){	
+	 student(){	
 		// model, get averge
 		this.model = new Model();
 		let getGrades = this.model.processGrades(this.grades);
@@ -36,32 +43,30 @@ export class Controller {
 		let print = View.printStudentProfile(studentsArray); // when complete
 	}
 
-	Professor(){
+	professor(){
 
-		let professor = CustonEvents.reading('Professor');
-
-		console.log(professor);
-
-		document.addEventListener('reading',  CustonEvents.reading());
-
-
-		if(professor.stats == 'Done'){
-			
-			professor._instance.className = this.className;
-			professor._instance.professorName = this.name;
-
-			
-			//init array
-			let professorArray = [];
-			// push obj into array
-			professorArray.push(professor._instance);
-
+            // creating new Instance
+		let professor = new Professor();			
+		professor.className = this.className;
+		professor.professorName = this.name;
 		
+		//init array
+		let professorArray = [];
+		
+		// push obj into array
+		professorArray.push(professor);
+		let print = View.printProfessorProfile(professorArray);
+		
+		// let evtComplete = CustonEvents.complete();
+		// document.addEventListener('complete', this.evtDetails);
+		// document.dispatchEvent(evtComplete);
 
-			 let print = View.printProfessorProfile(professorArray);
-			// let professorView = EventHandle.complete(professorArray);
-			// document.addEventListener(EventHandle.EvtComplete, EventHandle.complete());
 
-		}
+		// let professorView = EventHandle.complete(professorArray);
+		// document.addEventListener(EventHandle.EvtComplete, EventHandle.complete());
+	}
+
+	evtDetails(_e){
+		console.log('this event', _e);
 	}
 }

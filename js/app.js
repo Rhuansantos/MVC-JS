@@ -1,9 +1,8 @@
+import {CustonEvents} from './events';
 import {Controller} from './mvc/controller';
-
 export class App{
 	constructor(_type){
 		// exec this function
-
 		this.sendForm(_type);
 	}
 	// Singleton - allows create 1 professor and many students
