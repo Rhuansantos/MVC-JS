@@ -1,16 +1,26 @@
-// getting = controller
-// loading = model
-// complete = view
-import {Model} from './mvc/model';
-import {View} from './mvc/view';
+import {View} from './mvc/view';import {Model} from './mvc/model';
 export class CustonEvents extends Event{
       constructor(_e){
             super(_e);
       }
-      static load(_e){
+      static read(_e){
             // creating event
-            let loadEvt = new Event('load');
-            loadEvt._t = _e;
-            return loadEvt;
+            let readEvt = new Event('reading');
+            readEvt._t = _e;
+            return readEvt;
+      }
+
+      static loading(){
+
+      }
+
+      static complete(_e){
+            let completeEvt = new Event('complete');
+            completeEvt._Obj = _e;
+            
+            let print = View.printProfessorProfile(completeEvt._Obj);
+
+            return completeEvt;
+            
       }
 }
