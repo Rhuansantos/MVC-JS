@@ -1,6 +1,6 @@
 import {CustonEvents} from '.././events';
-
-
+import {View} from './view';
+import {Model} from './model';
 import {Student, Professor} from '.././classRoom';
 
 export class Controller {
@@ -9,24 +9,23 @@ export class Controller {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
-		// let professor = this.professor();
-		// let student = this.student();
-		
-		// custon event
-		this.events = CustonEvents.read();
+		this.professorArray = [];
+
 		if(_type == 'professor'){
-			document.addEventListener('loading', this.professor());
+			this.professor();
 		}
 		else if(_type == 'student'){
-			document.addEventListener('loading', this.student);
+			this.student();
 		}
 		else{
 			throw 'this is not a valid option';
 		}
 
-		document.dispatchEvent(this.events);
 	}
 	 student(){	
+
+		let evt = CustonEvents.loading();
+
 		// model, get averge
 		this.model = new Model();
 		let getGrades = this.model.processGrades(this.grades);
@@ -47,29 +46,25 @@ export class Controller {
 		let print = View.printStudentProfile(studentsArray); // when complete
 	}
 
-	professor(){
+	  professor(_e){
+
+		let evt = CustonEvents.complete(this);
 
             // creating new Instance
 		let professor = new Professor();			
-		professor.className = this.className;
-		professor.professorName = this.name;
-
-		//init array
-		let professorArray = [];
+		professor.className = evt._obj.className;
+		professor.professorName = evt._obj.name;		
 		
 		// push obj into array
-		professorArray.push(professor);
+		evt._obj.professorArray.push(professor);
 
-		let evt = CustonEvents.complete(professorArray);
+		document.addEventListener('complete', this.sendView);
+		document.dispatchEvent(evt);
 
-		document.addEventListener('complete', Controller.evtDetails);
-
-		dispatchEvent(evt);
-
-		console.log(evt);
 	}
 
-	static evtDetails(_e){
+	sendView(_e){
 		console.log('this event', _e);
+		View.printProfessorProfile(_e._obj.professorArray);
 	}
 }

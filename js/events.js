@@ -1,4 +1,6 @@
-import {View} from './mvc/view';import {Model} from './mvc/model';
+import {View} from './mvc/view';
+import {Model} from './mvc/model';
+import {Controller} from './mvc/controller';
 export class CustonEvents extends Event{
       constructor(_e){
             super(_e);
@@ -6,21 +8,22 @@ export class CustonEvents extends Event{
       static read(_e){
             // creating event
             let readEvt = new Event('reading');
-            readEvt._t = _e;
+            readEvt._e = _e;
+
             return readEvt;
       }
 
-      static loading(){
-
+      static loading(_e){
+            let loadEvt = new Event('loading');
+            loadEvt._t = _e;
+            
+            return loadEvt;
       }
 
       static complete(_e){
             let completeEvt = new Event('complete');
-            completeEvt._Obj = _e;
-            
-            let print = View.printProfessorProfile(completeEvt._Obj);
-
+            completeEvt._obj = _e;
+      
             return completeEvt;
-            
       }
 }

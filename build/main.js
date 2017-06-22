@@ -103,6 +103,8 @@ var _view = require('./mvc/view');
 
 var _model = require('./mvc/model');
 
+var _controller = require('./mvc/controller');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -123,19 +125,23 @@ var CustonEvents = exports.CustonEvents = function (_Event) {
             value: function read(_e) {
                   // creating event
                   var readEvt = new Event('reading');
-                  readEvt._t = _e;
+                  readEvt._e = _e;
+
                   return readEvt;
             }
       }, {
             key: 'loading',
-            value: function loading() {}
+            value: function loading(_e) {
+                  var loadEvt = new Event('loading');
+                  loadEvt._t = _e;
+
+                  return loadEvt;
+            }
       }, {
             key: 'complete',
             value: function complete(_e) {
                   var completeEvt = new Event('complete');
-                  completeEvt._Obj = _e;
-
-                  var print = _view.View.printProfessorProfile(completeEvt._Obj);
+                  completeEvt._obj = _e;
 
                   return completeEvt;
             }
@@ -144,7 +150,7 @@ var CustonEvents = exports.CustonEvents = function (_Event) {
       return CustonEvents;
 }(Event);
 
-},{"./mvc/model":6,"./mvc/view":7}],4:[function(require,module,exports){
+},{"./mvc/controller":5,"./mvc/model":6,"./mvc/view":7}],4:[function(require,module,exports){
 'use strict';
 
 var _App = require('./App');
@@ -174,6 +180,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _events = require('.././events');
 
+var _view = require('./view');
+
+var _model = require('./model');
+
 var _classRoom = require('.././classRoom');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -186,27 +196,25 @@ var Controller = exports.Controller = function () {
 		this.age = _age;
 		this.className = _className;
 		this.grades = _grades;
-		// let professor = this.professor();
-		// let student = this.student();
+		this.professorArray = [];
 
-		// custon event
-		this.events = _events.CustonEvents.read();
 		if (_type == 'professor') {
-			document.addEventListener('loading', this.professor());
+			this.professor();
 		} else if (_type == 'student') {
-			document.addEventListener('loading', this.student);
+			this.student();
 		} else {
 			throw 'this is not a valid option';
 		}
-
-		document.dispatchEvent(this.events);
 	}
 
 	_createClass(Controller, [{
 		key: 'student',
 		value: function student() {
+
+			var evt = _events.CustonEvents.loading();
+
 			// model, get averge
-			this.model = new Model();
+			this.model = new _model.Model();
 			var getGrades = this.model.processGrades(this.grades);
 			var getAvg = this.model.processAvg(getGrades);
 
@@ -222,42 +230,37 @@ var Controller = exports.Controller = function () {
 			studentsArray.push(student);
 
 			// print student
-			var print = View.printStudentProfile(studentsArray); // when complete
+			var print = _view.View.printStudentProfile(studentsArray); // when complete
 		}
 	}, {
 		key: 'professor',
-		value: function professor() {
+		value: function professor(_e) {
+
+			var evt = _events.CustonEvents.complete(this);
 
 			// creating new Instance
 			var professor = new _classRoom.Professor();
-			professor.className = this.className;
-			professor.professorName = this.name;
-
-			//init array
-			var professorArray = [];
+			professor.className = evt._obj.className;
+			professor.professorName = evt._obj.name;
 
 			// push obj into array
-			professorArray.push(professor);
+			evt._obj.professorArray.push(professor);
 
-			var evt = _events.CustonEvents.complete(professorArray);
-
-			document.addEventListener('complete', Controller.evtDetails);
-
-			dispatchEvent(evt);
-
-			console.log(evt);
+			document.addEventListener('complete', this.sendView);
+			document.dispatchEvent(evt);
 		}
-	}], [{
-		key: 'evtDetails',
-		value: function evtDetails(_e) {
+	}, {
+		key: 'sendView',
+		value: function sendView(_e) {
 			console.log('this event', _e);
+			_view.View.printProfessorProfile(_e._obj.professorArray);
 		}
 	}]);
 
 	return Controller;
 }();
 
-},{".././classRoom":2,".././events":3}],6:[function(require,module,exports){
+},{".././classRoom":2,".././events":3,"./model":6,"./view":7}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
